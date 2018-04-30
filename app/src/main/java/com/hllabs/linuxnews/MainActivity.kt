@@ -41,8 +41,22 @@ class MainActivity : AppCompatActivity() {
 
         builder.setTitle("Filter News Sources")
 
+        builder.setPositiveButton("OK" , null)
 
-        builder.setPositiveButton("OK" , {dialogInterface, i ->
+        builder.setNeutralButton("Select All" , {dialogInterface, i ->
+            val dialogView = dialogInterface as AlertDialog
+            for(i in 0 until 16) dialogView.listView.setItemChecked(i,true)
+        })
+
+        builder.setNegativeButton("Select None" , {dialogInterface, i ->
+            val dialogView = dialogInterface as AlertDialog
+            for(i in 0 until 16) dialogView.listView.setItemChecked(i,false)
+        })
+
+        builder.setMultiChoiceItems(Sites().siteNames, currentCheckedArray , { dialogInterface, i, b -> })
+
+        builder.setOnDismissListener { dialogInterface ->
+
             val dialogView = dialogInterface as AlertDialog
             selectedSites.clear()
             for(i in 0 until currentCheckedArray.size){
@@ -57,12 +71,8 @@ class MainActivity : AppCompatActivity() {
             Log.d("LOG!" , selectedSites.size.toString())
             Log.d("LOG!" , selectedSites.toString())
 
+        }
 
-            dialogInterface.dismiss()
-
-        })
-
-        builder.setMultiChoiceItems(Sites().siteNames, currentCheckedArray , { dialogInterface, i, b -> })
 
         // Finally, make the alert dialog using builder
         val dialog: AlertDialog = builder.create()
