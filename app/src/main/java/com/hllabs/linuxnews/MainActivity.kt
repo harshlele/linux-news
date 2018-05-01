@@ -1,9 +1,9 @@
 package com.hllabs.linuxnews
 
+import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 
@@ -14,9 +14,26 @@ class MainActivity : AppCompatActivity() {
 
     var selectedSites:ArrayList<String> = Sites().siteUrls
 
+    var listToShow:ArrayList<NewsArticle> = arrayListOf()
+
+    var feedResultsCtr = 16
+
+    var t1:Long = 0
+    var t2:Long = 0
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        FeedItemsBus.INSTANCE.toObserverable().subscribe({
+            listToShow.addAll(it)
+
+            feedResultsCtr--
+            if(feedResultsCtr <= 0) sortFeed()
+
+        })
+        reloadArticles()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -33,6 +50,21 @@ class MainActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+
+    fun reloadArticles(){
+        for (site in selectedSites){
+            FeedLoaderTask(site,"Omg ubuntu").executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+        }
+    }
+
+    fun sortFeed(){
+        feedResultsCtr = 0
+        //var sortedList = listToShow.sortedWith(compareBy({it.pubDate}))
+        var sortedList = listToShow.sortedWith(compareByDescending { it.pubDate })
+
+        listToShow.clear()
     }
 
     fun showFilterDialog(){
@@ -59,17 +91,16 @@ class MainActivity : AppCompatActivity() {
 
             val dialogView = dialogInterface as AlertDialog
             selectedSites.clear()
-            for(i in 0 until currentCheckedArray.size){
+            for(i in 0 until 16){
                 currentCheckedArray[i] = dialogView.listView.isItemChecked(i)
 
-                if(currentCheckedArray[i]){
+                if(currentCheckedArray[i]) {
                     selectedSites.add(Sites().siteUrls[i])
+                    feedResultsCtr++
                 }
 
             }
-
-            Log.d("LOG!" , selectedSites.size.toString())
-            Log.d("LOG!" , selectedSites.toString())
+            reloadArticles()
 
         }
 
