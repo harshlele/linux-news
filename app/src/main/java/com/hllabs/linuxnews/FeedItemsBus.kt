@@ -3,7 +3,7 @@ package com.hllabs.linuxnews
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
-enum class EventBus {
+enum class FeedItemsBus {
 
     INSTANCE;
 
