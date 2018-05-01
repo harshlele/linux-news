@@ -13,5 +13,11 @@
         android:title="Search"
         app:showAsAction="always"/>
 
+    <item
+        android:id="@+id/action_favorites"
+        android:icon="@drawable/ic_search_24dp"
+        android:title="Favorites"
+        app:showAsAction="never"/>
+
 
 </menu>
