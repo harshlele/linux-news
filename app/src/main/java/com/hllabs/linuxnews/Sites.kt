@@ -28,4 +28,10 @@ class Sites{
                                         "https://www.reddit.com/r/debian/.rss"
     )
 
+
+    fun getSiteNameFromUrl(url:String):String{
+        val index = siteUrls.indexOf(url)
+        return siteNames[index].toString()
+    }
+
 }

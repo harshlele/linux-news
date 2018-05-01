@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     //array of selected site urls
     //By default, all sites are selected
-    var selectedSites:ArrayList<String> = Sites().siteUrls
+    var selectedSiteUrls:ArrayList<String> = Sites().siteUrls
 
     //The list of news articles from all selected sites
     var combinedArticleList:ArrayList<NewsArticle> = arrayListOf()
@@ -65,8 +65,8 @@ class MainActivity : AppCompatActivity() {
 
     //Start a new AsyncTask for every selected site and run them in parallel
     fun reloadArticles(){
-        for (site in selectedSites){
-            FeedLoaderTask(site,"Omg ubuntu").executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+        for (url in selectedSiteUrls){
+            FeedLoaderTask(url,Sites().getSiteNameFromUrl(url)).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
         }
     }
 
@@ -107,12 +107,12 @@ class MainActivity : AppCompatActivity() {
 
             val dialogView = dialogInterface as AlertDialog
             //clear the selected sites list to repopulate them again
-            selectedSites.clear()
+            selectedSiteUrls.clear()
             for(i in 0 until 16){
                 currentCheckedArray[i] = dialogView.listView.isItemChecked(i)
 
                 if(currentCheckedArray[i]) {
-                    selectedSites.add(Sites().siteUrls[i])
+                    selectedSiteUrls.add(Sites().siteUrls[i])
                     //increment the counter
                     feedResultsCtr++
                 }
