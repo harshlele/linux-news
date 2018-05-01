@@ -29,6 +29,13 @@ class Sites{
     )
 
 
+    val defaultCheckedArray = booleanArrayOf(true, false, true, false, true , false, false, false, true, false, true , false, false, false, false, false)
+
+    val defaultSiteSelection = arrayListOf<String>("http://feeds.feedburner.com/d0od" , "http://rss.slashdot.org/Slashdot/slashdotMain",
+                                                    "https://www.linuxinsider.com/perl/syndication/rssfull.pl","https://ubuntu-mate.org/rss.xml",
+                                                    "https://insights.ubuntu.com/feed"
+                                                    )
+
     fun getSiteNameFromUrl(url:String):String{
         val index = siteUrls.indexOf(url)
         return siteNames[index].toString()
