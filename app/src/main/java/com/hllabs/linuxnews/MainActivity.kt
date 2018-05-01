@@ -6,6 +6,8 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import kotlinx.android.synthetic.main.activity_main.*
 
 /*
 * Main Activity
@@ -23,7 +25,9 @@ class MainActivity : AppCompatActivity() {
     //The list of news articles from all selected sites
     var combinedArticleList:ArrayList<NewsArticle> = arrayListOf()
 
-    var feedResultsCtr = 16
+    var feedSourcesCtr:Float = 16f
+
+    var totalFeedSources:Float = 16f
 
     var t1:Long = 0
     var t2:Long = 0
@@ -39,8 +43,12 @@ class MainActivity : AppCompatActivity() {
             combinedArticleList.addAll(it)
 
             //if articles from all sites have been retrieved, sort them
-            feedResultsCtr--
-            if(feedResultsCtr <= 0) sortFeed()
+            feedSourcesCtr--
+
+            val percent:Int = (((totalFeedSources - feedSourcesCtr)/totalFeedSources )*100).toInt()
+            waveLoadingView.progressValue = percent
+            waveLoadingView.centerTitle = "$percent %"
+            if(feedSourcesCtr <= 0) sortFeed()
 
         })
 
@@ -65,6 +73,9 @@ class MainActivity : AppCompatActivity() {
 
     //Start a new AsyncTask for every selected site and run them in parallel
     fun reloadArticles(){
+        waveLoadingView.visibility = View.VISIBLE
+        waveLoadingView.progressValue = 0
+        waveLoadingView.startAnimation()
         for (url in selectedSiteUrls){
             FeedLoaderTask(url,Sites().getSiteNameFromUrl(url)).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
         }
@@ -73,11 +84,14 @@ class MainActivity : AppCompatActivity() {
 
     //Sort the article list by publication date in reverse order
     fun sortFeed(){
-        feedResultsCtr = 0
+        feedSourcesCtr = 0f
         //var sortedList = combinedArticleList.sortedWith(compareBy({it.pubDate}))
         var sortedList = combinedArticleList.sortedWith(compareByDescending { it.pubDate })
 
         combinedArticleList.clear()
+
+        waveLoadingView.cancelAnimation()
+        waveLoadingView.visibility = View.GONE
     }
 
     //Show a dialog that allows the user to choose which sites to see news from
@@ -114,10 +128,13 @@ class MainActivity : AppCompatActivity() {
                 if(currentCheckedArray[i]) {
                     selectedSiteUrls.add(Sites().siteUrls[i])
                     //increment the counter
-                    feedResultsCtr++
+                    feedSourcesCtr++
                 }
 
             }
+
+            totalFeedSources = feedSourcesCtr
+
             //reload with the new list of sites
             reloadArticles()
 
