@@ -1,5 +1,9 @@
 package com.hllabs.linuxnews
 
+
+/*
+*List of site names and URLs.
+ */
 class Sites{
     val siteNames:Array<CharSequence> = arrayOf("Omgubuntu" , "bits.debian.org" , "Slashdot Linux" , "Linux.com" ,
             "Linux Insider" , "Planet Gentoo" , "Arch Linux News" , "Lubuntu Blog" ,

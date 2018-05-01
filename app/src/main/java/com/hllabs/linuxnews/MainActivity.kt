@@ -7,14 +7,21 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 
+/*
+* Main Activity
+* */
 class MainActivity : AppCompatActivity() {
 
-
+    //Array of booleans that holds whether a news site is selected or not
+    //By default all sites are selected
     var currentCheckedArray:BooleanArray = BooleanArray(16 , init = {true})
 
+    //array of selected site urls
+    //By default, all sites are selected
     var selectedSites:ArrayList<String> = Sites().siteUrls
 
-    var listToShow:ArrayList<NewsArticle> = arrayListOf()
+    //The list of news articles from all selected sites
+    var combinedArticleList:ArrayList<NewsArticle> = arrayListOf()
 
     var feedResultsCtr = 16
 
@@ -26,13 +33,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //Listener for Event bus
         FeedItemsBus.INSTANCE.toObserverable().subscribe({
-            listToShow.addAll(it)
+            //Add it to the combined list
+            combinedArticleList.addAll(it)
 
+            //if articles from all sites have been retrieved, sort them
             feedResultsCtr--
             if(feedResultsCtr <= 0) sortFeed()
 
         })
+
         reloadArticles()
     }
 
@@ -52,28 +63,32 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-
+    //Start a new AsyncTask for every selected site and run them in parallel
     fun reloadArticles(){
         for (site in selectedSites){
             FeedLoaderTask(site,"Omg ubuntu").executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
         }
     }
 
+
+    //Sort the article list by publication date in reverse order
     fun sortFeed(){
         feedResultsCtr = 0
-        //var sortedList = listToShow.sortedWith(compareBy({it.pubDate}))
-        var sortedList = listToShow.sortedWith(compareByDescending { it.pubDate })
+        //var sortedList = combinedArticleList.sortedWith(compareBy({it.pubDate}))
+        var sortedList = combinedArticleList.sortedWith(compareByDescending { it.pubDate })
 
-        listToShow.clear()
+        combinedArticleList.clear()
     }
 
+    //Show a dialog that allows the user to choose which sites to see news from
     fun showFilterDialog(){
 
         val builder = AlertDialog.Builder(this@MainActivity)
 
-        builder.setTitle("Filter News Sources")
+        builder.setTitle("Filter News Sites")
 
         builder.setPositiveButton("OK" , null)
+
 
         builder.setNeutralButton("Select All" , {dialogInterface, i ->
             val dialogView = dialogInterface as AlertDialog
@@ -87,19 +102,23 @@ class MainActivity : AppCompatActivity() {
 
         builder.setMultiChoiceItems(Sites().siteNames, currentCheckedArray , { dialogInterface, i, b -> })
 
+        //listener for when the dialog is dismissed, or closed
         builder.setOnDismissListener { dialogInterface ->
 
             val dialogView = dialogInterface as AlertDialog
+            //clear the selected sites list to repopulate them again
             selectedSites.clear()
             for(i in 0 until 16){
                 currentCheckedArray[i] = dialogView.listView.isItemChecked(i)
 
                 if(currentCheckedArray[i]) {
                     selectedSites.add(Sites().siteUrls[i])
+                    //increment the counter
                     feedResultsCtr++
                 }
 
             }
+            //reload with the new list of sites
             reloadArticles()
 
         }

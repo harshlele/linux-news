@@ -3,6 +3,7 @@ package com.hllabs.linuxnews
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
+//Simple Event bus using RXAndroid
 enum class FeedItemsBus {
 
     INSTANCE;
