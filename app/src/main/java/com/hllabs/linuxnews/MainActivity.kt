@@ -4,6 +4,7 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -16,18 +17,18 @@ class MainActivity : AppCompatActivity() {
 
     //Array of booleans that holds whether a news site is selected or not
     //By default all sites are selected
-    var currentCheckedArray:BooleanArray = BooleanArray(16 , init = {true})
+    var currentCheckedArray = Sites().defaultCheckedArray
 
     //array of selected site urls
     //By default, all sites are selected
-    var selectedSiteUrls:ArrayList<String> = Sites().siteUrls
+    var selectedSiteUrls:ArrayList<String> = Sites().defaultSiteSelection
 
     //The list of news articles from all selected sites
     var combinedArticleList:ArrayList<NewsArticle> = arrayListOf()
 
-    var feedSourcesCtr:Float = 16f
+    var feedSourcesCtr:Float = 5f
 
-    var totalFeedSources:Float = 16f
+    var totalFeedSources:Float = 5f
 
     var t1:Long = 0
     var t2:Long = 0
@@ -52,6 +53,11 @@ class MainActivity : AppCompatActivity() {
 
         })
 
+
+        newsList.layoutManager = LinearLayoutManager(this)
+        newsList.adapter = NewsListAdapter(combinedArticleList,this)
+
+
         reloadArticles()
     }
 
@@ -73,9 +79,13 @@ class MainActivity : AppCompatActivity() {
 
     //Start a new AsyncTask for every selected site and run them in parallel
     fun reloadArticles(){
+        (newsList.adapter as NewsListAdapter).clearList()
+
         waveLoadingView.visibility = View.VISIBLE
         waveLoadingView.progressValue = 0
+        waveLoadingView.centerTitle = "0 %"
         waveLoadingView.startAnimation()
+
         for (url in selectedSiteUrls){
             FeedLoaderTask(url,Sites().getSiteNameFromUrl(url)).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
         }
@@ -86,12 +96,15 @@ class MainActivity : AppCompatActivity() {
     fun sortFeed(){
         feedSourcesCtr = 0f
         //var sortedList = combinedArticleList.sortedWith(compareBy({it.pubDate}))
-        var sortedList = combinedArticleList.sortedWith(compareByDescending { it.pubDate })
+        val sortedList = combinedArticleList.sortedWith(compareByDescending { it.pubDate })
 
         combinedArticleList.clear()
 
+        (newsList.adapter as NewsListAdapter).addItems(ArrayList(sortedList))
+
         waveLoadingView.cancelAnimation()
         waveLoadingView.visibility = View.GONE
+
     }
 
     //Show a dialog that allows the user to choose which sites to see news from
