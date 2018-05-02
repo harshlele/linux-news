@@ -1,6 +1,7 @@
 package com.hllabs.linuxnews
 
 import android.content.Context
+import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.text.format.DateUtils
 import android.view.LayoutInflater
@@ -29,6 +30,14 @@ class NewsListAdapter(var newsItems:ArrayList<NewsArticle> , val context: Contex
 
         if(item.description != "") holder.descText.text = item.description
 
+        holder.newsCard.setOnClickListener(object: View.OnClickListener{
+            override fun onClick(p0: View?) {
+                val i = Intent(context,WebPageActivity::class.java)
+                i.putExtra("i" , newsItems[position])
+                context.startActivity(i)
+            }
+
+        })
     }
 
 
@@ -56,7 +65,8 @@ class NewsListAdapter(var newsItems:ArrayList<NewsArticle> , val context: Contex
         val titleTextView = view.articleTitleTextView
         val siteNameText = view.articleSiteName
         val pubDateText = view.articleDate
-        var descText = view.articleDescText
+        val descText = view.articleDescText
+        val newsCard = view.newsCard
     }
 
 
