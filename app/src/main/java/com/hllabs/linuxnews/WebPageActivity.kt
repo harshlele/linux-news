@@ -7,6 +7,10 @@ import android.webkit.WebChromeClient
 import android.webkit.WebViewClient
 import kotlinx.android.synthetic.main.activity_web_page.*
 
+
+/*
+* Activity to show the article content
+* */
 class WebPageActivity : AppCompatActivity() {
 
 
@@ -15,16 +19,19 @@ class WebPageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web_page)
 
+        //get the intent
         if(intent != null) {
             val article = intent.getParcelableExtra<NewsArticle>("i")
             webview.settings.javaScriptEnabled = true
             webview.webChromeClient = WebChromeClient()
             webview.webViewClient = WebViewClient()
-            if(article != null) {
 
+            if(article != null) {
+                //if the article content is not available,just load the full site
                 if(article.content == "") {
                     webview.loadUrl(article.link)
                 }
+                //if it is, load just that
                 else{
                     btnLoadFullPage.visibility = View.VISIBLE
                     loadContent(article)
@@ -42,7 +49,7 @@ class WebPageActivity : AppCompatActivity() {
         }
     }
 
-
+    //add a few css rules and title to the description
     fun loadContent(article: NewsArticle){
 
         val t = article.title

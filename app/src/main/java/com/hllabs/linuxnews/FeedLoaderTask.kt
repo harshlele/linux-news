@@ -13,7 +13,7 @@ class FeedLoaderTask(val url:String, val name:String ): AsyncTask<Unit, Unit, Un
     var articleList = ArrayList<NewsArticle>()
 
     override fun doInBackground(vararg p0: Unit?) {
-
+        //use RSS parser to read RSS feed
         val parser = Parser()
         parser.execute(url)
         parser.onFinish(object: Parser.OnTaskCompleted{

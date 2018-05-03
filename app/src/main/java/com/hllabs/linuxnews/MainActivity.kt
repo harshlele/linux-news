@@ -26,10 +26,13 @@ class MainActivity : AppCompatActivity() {
     //The list of news articles from all selected sites
     var combinedArticleList:ArrayList<NewsArticle> = arrayListOf()
 
+    //counter for feed sources that is decremented every time a feed has loaded
     var feedSourcesCtr:Float = 5f
 
+    //total no of feeds
     var totalFeedSources:Float = 5f
 
+    //for measuring time
     var t1:Long = 0
     var t2:Long = 0
 
@@ -46,6 +49,7 @@ class MainActivity : AppCompatActivity() {
             //if articles from all sites have been retrieved, sort them
             feedSourcesCtr--
 
+            //calculate percent of feeds loaded and display them on the progress view
             val percent:Int = (((totalFeedSources - feedSourcesCtr)/totalFeedSources )*100).toInt()
             waveLoadingView.progressValue = percent
             waveLoadingView.centerTitle = "$percent %"
@@ -53,7 +57,7 @@ class MainActivity : AppCompatActivity() {
 
         })
 
-
+        //initialise recyclerview
         newsList.layoutManager = LinearLayoutManager(this)
         newsList.adapter = NewsListAdapter(combinedArticleList,this)
 
@@ -83,11 +87,26 @@ class MainActivity : AppCompatActivity() {
 
         waveLoadingView.visibility = View.VISIBLE
         waveLoadingView.progressValue = 0
-        waveLoadingView.centerTitle = "0 %"
-        waveLoadingView.startAnimation()
 
-        for (url in selectedSiteUrls){
-            FeedLoaderTask(url,Sites().getSiteNameFromUrl(url)).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+        //if no sites have been selected,show a no site selected loading animation
+        if(selectedSiteUrls.size == 0){
+
+            waveLoadingView.centerTitle = "No site selected"
+            waveLoadingView.startAnimation()
+
+        }
+
+        else {
+
+            //Show the loading animation
+            waveLoadingView.visibility = View.VISIBLE
+            waveLoadingView.progressValue = 0
+            waveLoadingView.centerTitle = "0 %"
+            waveLoadingView.startAnimation()
+            //start asynctask for each site
+            for (url in selectedSiteUrls) {
+                FeedLoaderTask(url, Sites().getSiteNameFromUrl(url)).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+            }
         }
     }
 
@@ -95,7 +114,6 @@ class MainActivity : AppCompatActivity() {
     //Sort the article list by publication date in reverse order
     fun sortFeed(){
         feedSourcesCtr = 0f
-        //var sortedList = combinedArticleList.sortedWith(compareBy({it.pubDate}))
         val sortedList = combinedArticleList.sortedWith(compareByDescending { it.pubDate })
 
         combinedArticleList.clear()

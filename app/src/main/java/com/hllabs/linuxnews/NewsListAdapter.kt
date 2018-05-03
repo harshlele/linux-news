@@ -10,12 +10,16 @@ import android.view.ViewGroup
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.news_item.view.*
 
+/*
+* Adapter for list of articles
+* */
 class NewsListAdapter(var newsItems:ArrayList<NewsArticle> , val context: Context): RecyclerView.Adapter<NewsListAdapter.NewsViewHolder>() {
 
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val item = newsItems[position]
 
+        //if an image is available, load it. Else,hide the view
         if(item.imgLink != "") {
             holder.headerImgView.visibility = View.VISIBLE
             Picasso.get().load(item.imgLink).into(holder.headerImgView)
@@ -26,10 +30,12 @@ class NewsListAdapter(var newsItems:ArrayList<NewsArticle> , val context: Contex
 
         if(item.siteName != "") holder.siteNameText.text = item.siteName
 
-        holder.pubDateText.text = DateUtils.getRelativeTimeSpanString(item.pubDate.time, System.currentTimeMillis(), DateUtils.DAY_IN_MILLIS)
+        //Convert Date to relative, and set it
+        holder.pubDateText.text = DateUtils.getRelativeTimeSpanString(item.pubDate.time, System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS)
 
         if(item.description != "") holder.descText.text = item.description
 
+        //set click listener for when item is clicked
         holder.newsCard.setOnClickListener(object: View.OnClickListener{
             override fun onClick(p0: View?) {
                 val i = Intent(context,WebPageActivity::class.java)

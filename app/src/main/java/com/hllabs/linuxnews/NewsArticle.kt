@@ -6,6 +6,7 @@ import java.util.*
 
 /*
 * Data class to hold Article Information
+* Has a parcelable inheritance so it can be passed between activities
 * */
 data class NewsArticle(
             var feedUrl:String = "", var siteName:String = "", var title:String = "", var author:String = "",
