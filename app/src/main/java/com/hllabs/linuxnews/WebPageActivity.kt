@@ -14,11 +14,18 @@ class WebPageActivity : AppCompatActivity() {
 
         if(intent != null) {
             val article = intent.getParcelableExtra<NewsArticle>("i")
+            webview.settings.javaScriptEnabled = true
+            webview.webChromeClient = WebChromeClient()
+            webview.webViewClient = WebViewClient()
+
             if(article != null) {
-                webview.settings.javaScriptEnabled = true
-                webview.webChromeClient = WebChromeClient()
-                webview.webViewClient = WebViewClient()
-                webview.loadUrl(article.link)
+
+                if(article.content == "") {
+                    webview.loadUrl(article.link)
+                }
+                else{
+                    webview.loadData(article.content, "text/html" , "UTF-8")
+                }
 
             }
         }
