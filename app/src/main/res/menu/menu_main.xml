@@ -14,9 +14,8 @@
         app:showAsAction="always"/>
 
     <item
-        android:id="@+id/action_favorites"
-        android:icon="@drawable/ic_search_24dp"
-        android:title="Favorites"
+        android:id="@+id/action_downloads"
+        android:title="Downloads"
         app:showAsAction="never"/>
 
 
