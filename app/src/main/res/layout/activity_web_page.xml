@@ -10,16 +10,42 @@
     <WebView
         android:id="@+id/webview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        />
 
 
-    <Button
-        android:id="@+id/btnLoadFullPage"
-        android:visibility="gone"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Load Full Webpage"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="8dp"
-        />
+        android:orientation="horizontal"
+        android:layout_gravity="bottom|center"
+        >
+
+        <Button
+            android:id="@+id/btnLoadFullPage"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Load Full Webpage"
+            android:layout_gravity="end"
+            android:layout_margin="8dp"
+            />
+
+        <Button
+            android:id="@+id/btnDownloadPage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="Download Page"
+            android:layout_gravity="end"
+            android:layout_margin="8dp"
+            />
+
+
+
+    </LinearLayout>
+
+
+
+
 </FrameLayout>

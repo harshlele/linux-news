@@ -55,20 +55,6 @@
                     android:layout_weight="80"
                     android:textAppearance="@android:style/TextAppearance.Material.Medium" />
 
-
-                <ImageButton
-                    android:id="@+id/downloadButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_file_download_black_24dp"
-                    android:layout_weight="20"
-                    android:background="@android:color/transparent"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:clickable="true"
-
-                    />
-
-
             </LinearLayout>
 
 

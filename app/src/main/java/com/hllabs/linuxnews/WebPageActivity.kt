@@ -3,9 +3,13 @@ package com.hllabs.linuxnews
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
+import android.webkit.WebView
 import android.webkit.WebViewClient
 import kotlinx.android.synthetic.main.activity_web_page.*
+
+
 
 
 /*
@@ -13,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_web_page.*
 * */
 class WebPageActivity : AppCompatActivity() {
 
-
+    var isFullPageLoaded = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,15 +28,31 @@ class WebPageActivity : AppCompatActivity() {
             val article = intent.getParcelableExtra<NewsArticle>("i")
             webview.settings.javaScriptEnabled = true
             webview.webChromeClient = WebChromeClient()
-            webview.webViewClient = WebViewClient()
+
+            webview.addJavascriptInterface(JSInterface(), "HTMLOUT")
+
+            webview.webViewClient = object:WebViewClient(){
+                override fun onPageFinished(view: WebView?, url: String?) {
+                    if(isFullPageLoaded) btnDownloadPage.visibility = View.VISIBLE
+                }
+            }
+
+            btnDownloadPage.setOnClickListener(object : View.OnClickListener{
+                override fun onClick(p0: View?) {
+                    /* This call inject JavaScript into the page which just finished loading. */
+                    webview.loadUrl("javascript:window.HTMLOUT.processHTML(document.documentElement.outerHTML);")
+                }
+            })
+
 
             if(article != null) {
                 //if the article content is not available,just load the full site
                 if(article.content == "") {
                     webview.loadUrl(article.link)
                 }
-                //if it is, load just that
+                //if it is, load just the description and title
                 else{
+                    isFullPageLoaded = false
                     btnLoadFullPage.visibility = View.VISIBLE
                     loadContent(article)
                 }
@@ -92,5 +112,14 @@ class WebPageActivity : AppCompatActivity() {
 
         webview.loadData(htmlContent, "text/html" , "UTF-8")
 
+    }
+
+
+    class JSInterface{
+        @JavascriptInterface
+        fun processHTML(html: String) {
+
+
+        }
     }
 }
