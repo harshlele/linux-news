@@ -1,5 +1,6 @@
 package com.hllabs.linuxnews
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -7,6 +8,8 @@ import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
+import io.paperdb.Paper
 import kotlinx.android.synthetic.main.activity_web_page.*
 
 
@@ -18,34 +21,39 @@ import kotlinx.android.synthetic.main.activity_web_page.*
 class WebPageActivity : AppCompatActivity() {
 
     var isFullPageLoaded = true
+    var isPageSaved = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web_page)
 
+        val article:NewsArticle
+
         //get the intent
         if(intent != null) {
-            val article = intent.getParcelableExtra<NewsArticle>("i")
+            article = intent.getParcelableExtra<NewsArticle>("i")
             webview.settings.javaScriptEnabled = true
             webview.webChromeClient = WebChromeClient()
 
-            webview.addJavascriptInterface(JSInterface(), "HTMLOUT")
-
             webview.webViewClient = object:WebViewClient(){
                 override fun onPageFinished(view: WebView?, url: String?) {
-                    if(isFullPageLoaded) btnDownloadPage.visibility = View.VISIBLE
+                    if(isFullPageLoaded && !isPageSaved) btnDownloadPage.visibility = View.VISIBLE
                 }
             }
 
             btnDownloadPage.setOnClickListener(object : View.OnClickListener{
                 override fun onClick(p0: View?) {
-                    /* This call inject JavaScript into the page which just finished loading. */
+                    btnDownloadPage.visibility = View.GONE
+                    isPageSaved = true
+                    /* This call inject JavaScript into the page */
                     webview.loadUrl("javascript:window.HTMLOUT.processHTML(document.documentElement.outerHTML);")
                 }
             })
 
 
             if(article != null) {
+                webview.addJavascriptInterface(JSInterface(applicationContext,article), "HTMLOUT")
+
                 //if the article content is not available,just load the full site
                 if(article.content == "") {
                     webview.loadUrl(article.link)
@@ -61,6 +69,7 @@ class WebPageActivity : AppCompatActivity() {
 
             btnLoadFullPage.setOnClickListener(object : View.OnClickListener{
                 override fun onClick(p0: View?) {
+                    isFullPageLoaded = true
                     webview.loadUrl(article.link)
                     btnLoadFullPage.visibility = View.GONE
                 }
@@ -115,11 +124,16 @@ class WebPageActivity : AppCompatActivity() {
     }
 
 
-    class JSInterface{
+    class JSInterface(val c:Context,val article: NewsArticle){
         @JavascriptInterface
         fun processHTML(html: String) {
-
-
+            Paper.init(c)
+            Paper.book().write(article.title,OfflineNewsObj(article = article,html = html))
+            val savedItemList = Paper.book().read("item-names" , ArrayList<String>())
+            savedItemList.add(article.title)
+            Paper.book().write("item-names" , savedItemList)
+            Toast.makeText(c,"Page Downloaded" , Toast.LENGTH_SHORT).show()
         }
+
     }
 }
