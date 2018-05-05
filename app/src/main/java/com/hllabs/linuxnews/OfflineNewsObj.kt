@@ -1,3 +1,3 @@
 package com.hllabs.linuxnews
 
-class OfflineNewsObj(article: NewsArticle , html: String)
+class OfflineNewsObj(val article: NewsArticle ,val html: String)

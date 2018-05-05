@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.news_item.view.*
 /*
 * Adapter for list of articles
 * */
-class NewsListAdapter(var newsItems:ArrayList<NewsArticle> , val context: Context): RecyclerView.Adapter<NewsListAdapter.NewsViewHolder>() {
+class NewsListAdapter(var newsItems:ArrayList<NewsArticle> , val context: Context , val isOffline:Boolean = false): RecyclerView.Adapter<NewsListAdapter.NewsViewHolder>() {
 
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
@@ -34,12 +34,13 @@ class NewsListAdapter(var newsItems:ArrayList<NewsArticle> , val context: Contex
         holder.pubDateText.text = DateUtils.getRelativeTimeSpanString(item.pubDate.time, System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS)
 
         if(item.description != "") holder.descText.text = item.description
+        else holder.descText.visibility = View.GONE
 
         //set click listener for when item is clicked
         holder.newsCard.setOnClickListener(object: View.OnClickListener{
             override fun onClick(p0: View?) {
                 val i = Intent(context,WebPageActivity::class.java)
-                i.putExtra("i" , newsItems[position])
+                i.putExtra("i" , newsItems[holder.adapterPosition])
                 context.startActivity(i)
             }
 
@@ -48,7 +49,7 @@ class NewsListAdapter(var newsItems:ArrayList<NewsArticle> , val context: Contex
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
-        return NewsViewHolder(LayoutInflater.from(context).inflate(R.layout.news_item, parent, false))
+        return NewsViewHolder(LayoutInflater.from(context).inflate(R.layout.news_item, parent, false),isOffline)
     }
 
     override fun getItemCount(): Int {
@@ -66,13 +67,17 @@ class NewsListAdapter(var newsItems:ArrayList<NewsArticle> , val context: Contex
         notifyDataSetChanged()
     }
 
-    class NewsViewHolder(view: View): RecyclerView.ViewHolder(view) {
+    class NewsViewHolder(view: View,isOffline: Boolean): RecyclerView.ViewHolder(view) {
         val headerImgView = view.articleHeaderImage
         val titleTextView = view.articleTitleTextView
         val siteNameText = view.articleSiteName
         val pubDateText = view.articleDate
         val descText = view.articleDescText
         val newsCard = view.newsCard
+        val btnDeleteSaved = view.deleteSavedBtn
+        init {
+            if(isOffline) btnDeleteSaved.visibility = View.VISIBLE
+        }
     }
 
 

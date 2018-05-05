@@ -1,5 +1,6 @@
 package com.hllabs.linuxnews
 
+import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
@@ -114,6 +115,11 @@ class MainActivity : AppCompatActivity() {
 
                 reloadArticles()
             }
+            else if(item.itemId == R.id.action_downloads){
+                val intent = Intent(this,OfflineActivity::class.java)
+                startActivity(intent)
+            }
+
         }
 
         return super.onOptionsItemSelected(item)

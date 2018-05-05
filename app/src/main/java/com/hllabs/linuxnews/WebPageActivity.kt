@@ -128,11 +128,10 @@ class WebPageActivity : AppCompatActivity() {
         @JavascriptInterface
         fun processHTML(html: String) {
             Paper.init(c)
-            Paper.book().write(article.title,OfflineNewsObj(article = article,html = html))
-            val savedItemList = Paper.book().read("item-names" , ArrayList<String>())
-            savedItemList.add(article.title)
-            Paper.book().write("item-names" , savedItemList)
-            Toast.makeText(c,"Page Downloaded" , Toast.LENGTH_SHORT).show()
+            val savedItemList = Paper.book().read("items" , ArrayList<OfflineNewsObj>())
+            savedItemList.add(OfflineNewsObj(article,html))
+            Paper.book().write("items" , savedItemList)
+            Toast.makeText(c,"Page Saved" , Toast.LENGTH_SHORT).show()
         }
 
     }
