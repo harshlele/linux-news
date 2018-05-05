@@ -42,6 +42,9 @@ class NewsListAdapter(var newsItems:ArrayList<NewsArticle> , val context: Contex
         holder.newsCard.setOnClickListener {
             val i = Intent(context,WebPageActivity::class.java)
             i.putExtra("i" , newsItems[holder.adapterPosition])
+
+            if(isOffline) i.putExtra("isOffline",true)
+
             context.startActivity(i)
         }
 
