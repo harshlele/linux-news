@@ -8,6 +8,8 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
+import android.widget.EditText
 import kotlinx.android.synthetic.main.activity_main.*
 
 /*
@@ -27,15 +29,17 @@ class MainActivity : AppCompatActivity() {
     var combinedArticleList:ArrayList<NewsArticle> = arrayListOf()
 
     //counter for feed sources that is decremented every time a feed has loaded
-    var feedSourcesCtr:Float = 5f
+    var feedSourcesCtr:Float = 6f
 
     //total no of feeds
-    var totalFeedSources:Float = 5f
+    var totalFeedSources:Float = 6f
 
     //for measuring time
     var t1:Long = 0
     var t2:Long = 0
 
+    var isSearching = false
+    var searchedText = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,6 +80,40 @@ class MainActivity : AppCompatActivity() {
                 showFilterDialog()
                 return true
             }
+            else if(item.itemId == R.id.action_search){
+
+                val builder = AlertDialog.Builder(this@MainActivity)
+                builder.setTitle("Search For: ")
+                val editText = EditText(this@MainActivity)
+                editText.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+                builder.setView(editText)
+
+                builder.setPositiveButton("Search",{dialogInterface, i ->
+                    searchedText = editText.text.toString()
+                    isSearching = true
+
+                    feedSourcesCtr = 0f
+                    for(feed in selectedSiteUrls){feedSourcesCtr+=1}
+
+                    totalFeedSources = feedSourcesCtr
+
+
+                    reloadArticles()
+                })
+
+                val dialog:AlertDialog = builder.create()
+
+                dialog.show()
+            }
+            else if(item.itemId == R.id.action_refresh){
+                feedSourcesCtr = 0f
+                for(feed in selectedSiteUrls){feedSourcesCtr+=1}
+
+                totalFeedSources = feedSourcesCtr
+
+
+                reloadArticles()
+            }
         }
 
         return super.onOptionsItemSelected(item)
@@ -114,11 +152,31 @@ class MainActivity : AppCompatActivity() {
     //Sort the article list by publication date in reverse order
     fun sortFeed(){
         feedSourcesCtr = 0f
-        val sortedList = combinedArticleList.sortedWith(compareByDescending { it.pubDate })
+        val sortedList = ArrayList(combinedArticleList.sortedWith(compareByDescending { it.pubDate }))
 
         combinedArticleList.clear()
 
-        (newsList.adapter as NewsListAdapter).addItems(ArrayList(sortedList))
+        if(isSearching){
+
+
+            val iterator = sortedList.iterator()
+
+            while (iterator.hasNext()){
+                val item = iterator.next()
+                if( !item.title.contains(searchedText,true) &&
+                !item.description.contains(searchedText,true) &&
+                !item.siteName.equals(searchedText,true) &&
+                !item.author.equals(searchedText,true)
+                ){
+                    iterator.remove()
+                }
+
+            }
+            isSearching = false
+            searchedText = ""
+        }
+
+        (newsList.adapter as NewsListAdapter).addItems(sortedList)
 
         waveLoadingView.cancelAnimation()
         waveLoadingView.visibility = View.GONE
@@ -137,12 +195,12 @@ class MainActivity : AppCompatActivity() {
 
         builder.setNeutralButton("Select All" , {dialogInterface, i ->
             val dialogView = dialogInterface as AlertDialog
-            for(i in 0 until 16) dialogView.listView.setItemChecked(i,true)
+            for(i in 0 until 17) dialogView.listView.setItemChecked(i,true)
         })
 
         builder.setNegativeButton("Select None" , {dialogInterface, i ->
             val dialogView = dialogInterface as AlertDialog
-            for(i in 0 until 16) dialogView.listView.setItemChecked(i,false)
+            for(i in 0 until 17) dialogView.listView.setItemChecked(i,false)
         })
 
         builder.setMultiChoiceItems(Sites().siteNames, currentCheckedArray , { dialogInterface, i, b -> })
@@ -153,7 +211,7 @@ class MainActivity : AppCompatActivity() {
             val dialogView = dialogInterface as AlertDialog
             //clear the selected sites list to repopulate them again
             selectedSiteUrls.clear()
-            for(i in 0 until 16){
+            for(i in 0 until 17){
                 currentCheckedArray[i] = dialogView.listView.isItemChecked(i)
 
                 if(currentCheckedArray[i]) {
