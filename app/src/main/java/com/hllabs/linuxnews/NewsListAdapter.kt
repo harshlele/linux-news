@@ -7,7 +7,9 @@ import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.squareup.picasso.Picasso
+import io.paperdb.Paper
 import kotlinx.android.synthetic.main.news_item.view.*
 
 /*
@@ -37,11 +39,30 @@ class NewsListAdapter(var newsItems:ArrayList<NewsArticle> , val context: Contex
         else holder.descText.visibility = View.GONE
 
         //set click listener for when item is clicked
-        holder.newsCard.setOnClickListener(object: View.OnClickListener{
+        holder.newsCard.setOnClickListener {
+            val i = Intent(context,WebPageActivity::class.java)
+            i.putExtra("i" , newsItems[holder.adapterPosition])
+            context.startActivity(i)
+        }
+
+        holder.btnDeleteSaved.setOnClickListener(object : View.OnClickListener{
             override fun onClick(p0: View?) {
-                val i = Intent(context,WebPageActivity::class.java)
-                i.putExtra("i" , newsItems[holder.adapterPosition])
-                context.startActivity(i)
+
+                Paper.init(context)
+
+                val savedArticleList = Paper.book().read("items", ArrayList<OfflineNewsObj>())
+                savedArticleList.removeAt(holder.adapterPosition)
+                Paper.book().write("items", savedArticleList)
+
+                newsItems.clear()
+
+                for (item in savedArticleList) {
+                    newsItems.add(item.article)
+                }
+
+                notifyDataSetChanged()
+
+                Toast.makeText(context,"Page Deleted",Toast.LENGTH_SHORT).show()
             }
 
         })
