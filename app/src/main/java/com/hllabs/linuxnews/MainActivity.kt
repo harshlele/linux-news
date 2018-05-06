@@ -201,12 +201,12 @@ class MainActivity : AppCompatActivity() {
 
         builder.setNeutralButton("Select All" , {dialogInterface, i ->
             val dialogView = dialogInterface as AlertDialog
-            for(i in 0 until 17) dialogView.listView.setItemChecked(i,true)
+            for(i in 0 until 14) dialogView.listView.setItemChecked(i,true)
         })
 
         builder.setNegativeButton("Select None" , {dialogInterface, i ->
             val dialogView = dialogInterface as AlertDialog
-            for(i in 0 until 17) dialogView.listView.setItemChecked(i,false)
+            for(i in 0 until 14) dialogView.listView.setItemChecked(i,false)
         })
 
         builder.setMultiChoiceItems(Sites().siteNames, currentCheckedArray , { dialogInterface, i, b -> })
@@ -217,7 +217,7 @@ class MainActivity : AppCompatActivity() {
             val dialogView = dialogInterface as AlertDialog
             //clear the selected sites list to repopulate them again
             selectedSiteUrls.clear()
-            for(i in 0 until 17){
+            for(i in 0 until 14){
                 currentCheckedArray[i] = dialogView.listView.isItemChecked(i)
 
                 if(currentCheckedArray[i]) {

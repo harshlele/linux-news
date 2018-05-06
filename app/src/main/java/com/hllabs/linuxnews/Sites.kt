@@ -7,8 +7,7 @@ package com.hllabs.linuxnews
 class Sites{
     val siteNames:Array<CharSequence> = arrayOf("Distrowatch","Omgubuntu" , "bits.debian.org" , "Slashdot Linux" , "Linux.com" ,
             "Linux Insider" , "Planet Gentoo" , "Arch Linux News" , "Lubuntu Blog" ,
-            "Ubuntu Mate Blog" , "Kubuntu Blog" , "Ubuntu Insights" , "r/Linux" ,
-            "r/opensource" , "r/ubuntu" , "r/archlinux" , "r/debian"
+            "Ubuntu Mate Blog" , "Kubuntu Blog" , "Ubuntu Insights" , "Linux Today" , "Linux Journal"
     )
     val siteUrls:ArrayList<String> = arrayListOf("https://distrowatch.com/news/dw.xml",
                                         "http://feeds.feedburner.com/d0od" ,
@@ -22,16 +21,13 @@ class Sites{
                                         "https://ubuntu-mate.org/rss.xml",
                                         "https://kubuntu.org/feed/",
                                         "https://insights.ubuntu.com/feed",
-                                        "https://www.reddit.com/r/linux/.rss",
-                                        "https://www.reddit.com/r/opensource/.rss",
-                                        "https://www.reddit.com/r/ubuntu/.rss",
-                                        "https://www.reddit.com/r/archlinux/.rss",
-                                        "https://www.reddit.com/r/debian/.rss"
+                                        "http://feeds.feedburner.com/linuxtoday/linux?format=xml",
+                                        "https://www.linuxjournal.com/news/feed"
     )
 
 
     //array of default selections
-    val defaultCheckedArray = booleanArrayOf(true,true, false, true, false, true , false, false, false, true, false, true , false, false, false, false, false)
+    val defaultCheckedArray = booleanArrayOf(true , true, false, true, false, true , false, false, false, true, false, true , false, false)
 
     val defaultSiteSelection = arrayListOf<String>("https://distrowatch.com/news/dw.xml","http://feeds.feedburner.com/d0od" , "http://rss.slashdot.org/Slashdot/slashdotMain",
                                                     "https://www.linuxinsider.com/perl/syndication/rssfull.pl","https://ubuntu-mate.org/rss.xml",
