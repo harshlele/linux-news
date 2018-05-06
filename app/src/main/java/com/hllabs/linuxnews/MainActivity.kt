@@ -30,10 +30,10 @@ class MainActivity : AppCompatActivity() {
     var combinedArticleList:ArrayList<NewsArticle> = arrayListOf()
 
     //counter for feed sources that is decremented every time a feed has loaded
-    var feedSourcesCtr:Float = 6f
+    var feedSourcesCtr:Float = Sites().defaultSiteSelection.size.toFloat()
 
     //total no of feeds
-    var totalFeedSources:Float = 6f
+    var totalFeedSources:Float = Sites().defaultSiteSelection.size.toFloat()
 
     //for measuring time
     var t1:Long = 0
@@ -201,12 +201,12 @@ class MainActivity : AppCompatActivity() {
 
         builder.setNeutralButton("Select All" , {dialogInterface, i ->
             val dialogView = dialogInterface as AlertDialog
-            for(i in 0 until 14) dialogView.listView.setItemChecked(i,true)
+            for(i in 0 until Sites().siteUrls.size) dialogView.listView.setItemChecked(i,true)
         })
 
         builder.setNegativeButton("Select None" , {dialogInterface, i ->
             val dialogView = dialogInterface as AlertDialog
-            for(i in 0 until 14) dialogView.listView.setItemChecked(i,false)
+            for(i in 0 until Sites().siteUrls.size) dialogView.listView.setItemChecked(i,false)
         })
 
         builder.setMultiChoiceItems(Sites().siteNames, currentCheckedArray , { dialogInterface, i, b -> })
@@ -217,7 +217,7 @@ class MainActivity : AppCompatActivity() {
             val dialogView = dialogInterface as AlertDialog
             //clear the selected sites list to repopulate them again
             selectedSiteUrls.clear()
-            for(i in 0 until 14){
+            for(i in 0 until Sites().siteUrls.size){
                 currentCheckedArray[i] = dialogView.listView.isItemChecked(i)
 
                 if(currentCheckedArray[i]) {
