@@ -11,6 +11,8 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.activity_main.*
 
 /*
@@ -68,6 +70,12 @@ class MainActivity : AppCompatActivity() {
 
 
         reloadArticles()
+
+        MobileAds.initialize(this,"ca-app-pub-7444749934962149~4885084340")
+
+        val adRequest = AdRequest.Builder().build()
+
+        adView.loadAd(adRequest)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
