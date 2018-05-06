@@ -5,11 +5,12 @@ package com.hllabs.linuxnews
 *List of site names and URLs.
  */
 class Sites{
-    val siteNames:Array<CharSequence> = arrayOf("Distrowatch","Omgubuntu" , "bits.debian.org" , "Slashdot Linux" , "Linux.com" ,
+    val siteNames:Array<CharSequence> = arrayOf("Distrowatch","RHEL Blog","Omgubuntu" , "bits.debian.org" , "Slashdot Linux" , "Linux.com" ,
             "Linux Insider" , "Planet Gentoo" , "Arch Linux News" , "Lubuntu Blog" ,
             "Ubuntu Mate Blog" , "Kubuntu Blog" , "Ubuntu Insights" , "Linux Today" , "Linux Journal"
     )
     val siteUrls:ArrayList<String> = arrayListOf("https://distrowatch.com/news/dw.xml",
+                                        "https://redhatstackblog.redhat.com/feed/",
                                         "http://feeds.feedburner.com/d0od" ,
                                         "https://bits.debian.org/feeds/feed.rss" ,
                                         "http://rss.slashdot.org/Slashdot/slashdotMain",
@@ -27,9 +28,9 @@ class Sites{
 
 
     //array of default selections
-    val defaultCheckedArray = booleanArrayOf(true , true, false, true, false, true , false, false, false, true, false, true , false, false)
+    val defaultCheckedArray = booleanArrayOf(true ,true, false ,false, true, false, true , false, false, false, true, false, true , false, false)
 
-    val defaultSiteSelection = arrayListOf<String>("https://distrowatch.com/news/dw.xml","http://feeds.feedburner.com/d0od" , "http://rss.slashdot.org/Slashdot/slashdotMain",
+    val defaultSiteSelection = arrayListOf<String>("https://distrowatch.com/news/dw.xml", "https://redhatstackblog.redhat.com/feed/" , "http://rss.slashdot.org/Slashdot/slashdotMain",
                                                     "https://www.linuxinsider.com/perl/syndication/rssfull.pl","https://ubuntu-mate.org/rss.xml",
                                                     "https://insights.ubuntu.com/feed"
                                                     )
