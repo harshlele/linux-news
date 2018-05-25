@@ -11,9 +11,14 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import com.google.ads.consent.*
+import com.google.ads.mediation.admob.AdMobAdapter
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.activity_main.*
+import java.net.URL
+
+
 
 /*
 * Main Activity
@@ -44,6 +49,9 @@ class MainActivity : AppCompatActivity() {
     var isSearching = false
     var searchedText = ""
 
+    lateinit var adRequest:AdRequest
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -73,9 +81,86 @@ class MainActivity : AppCompatActivity() {
 
         MobileAds.initialize(this,"ca-app-pub-7444749934962149~4885084340")
 
-        val adRequest = AdRequest.Builder().build()
+        val consentInfo = ConsentInformation.getInstance(applicationContext)
 
-        adView.loadAd(adRequest)
+        val pubIds = arrayOf("pub-7444749934962149")
+
+
+
+        consentInfo.requestConsentInfoUpdate(pubIds,object : ConsentInfoUpdateListener{
+            override fun onFailedToUpdateConsentInfo(reason: String?) {
+                if(consentInfo.isRequestLocationInEeaOrUnknown) showConsentDialog()
+            }
+
+            override fun onConsentInfoUpdated(consentStatus: ConsentStatus?) {
+
+                if(consentInfo.isRequestLocationInEeaOrUnknown){
+
+                    when (consentStatus) {
+                        ConsentStatus.PERSONALIZED -> {
+                            adRequest = AdRequest.Builder().build()
+                            adView.loadAd(adRequest)
+
+                        }
+                        ConsentStatus.NON_PERSONALIZED -> {
+                            val extras = Bundle()
+                            extras.putString("npa", "1")
+                            adRequest = AdRequest.Builder().addNetworkExtrasBundle(AdMobAdapter::class.java , extras).build()
+                            adView.loadAd(adRequest)
+                        }
+                        else -> showConsentDialog()
+                    }
+                }
+                else{
+                    adRequest = AdRequest.Builder().build()
+                    adView.loadAd(adRequest)
+
+                }
+            }
+
+        })
+    }
+
+    fun showConsentDialog(){
+
+        val privPolicyUrl = URL("https://hllabs.github.io/linuxnews/privacy_policy")
+
+        val form = ConsentForm.Builder(applicationContext, privPolicyUrl)
+                .withListener(object : ConsentFormListener() {
+                    override fun onConsentFormLoaded() {}
+
+                    override fun onConsentFormOpened() {}
+
+
+                    override fun onConsentFormClosed(
+                            consentStatus: ConsentStatus?, userPrefersAdFree: Boolean?) {
+                        when (consentStatus) {
+                            ConsentStatus.PERSONALIZED -> {
+                                adRequest = AdRequest.Builder().build()
+                                adView.loadAd(adRequest)
+
+                            }
+                            ConsentStatus.NON_PERSONALIZED -> {
+                                val extras = Bundle()
+                                extras.putString("npa", "1")
+                                adRequest = AdRequest.Builder().addNetworkExtrasBundle(AdMobAdapter::class.java , extras).build()
+                                adView.loadAd(adRequest)
+                            }
+                            else -> showConsentDialog()
+                        }
+                    }
+
+                    override fun onConsentFormError(errorDescription: String?) { showConsentDialog()}
+                })
+                .withPersonalizedAdsOption()
+                .withNonPersonalizedAdsOption()
+                .withAdFreeOption()
+                .build()
+
+        form.load()
+
+        form.show()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

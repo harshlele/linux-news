@@ -37,6 +37,7 @@ dependencies {
     implementation 'io.paperdb:paperdb:2.6'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     implementation 'com.google.firebase:firebase-ads:15.0.0'
+    implementation 'com.google.android.ads.consent:consent-library:1.0.2'
 }
 
 apply plugin: 'com.google.gms.google-services'
