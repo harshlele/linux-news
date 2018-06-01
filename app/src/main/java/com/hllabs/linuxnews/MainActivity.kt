@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -51,6 +52,10 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var adRequest:AdRequest
 
+    var TAG = "LOG!"
+
+    //GDPR consent form
+    lateinit var form: ConsentForm
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,16 +84,19 @@ class MainActivity : AppCompatActivity() {
 
         reloadArticles()
 
+        //initialise mobile ads
         MobileAds.initialize(this,"ca-app-pub-7444749934962149~4885084340")
-
         val consentInfo = ConsentInformation.getInstance(applicationContext)
-
         val pubIds = arrayOf("pub-7444749934962149")
 
-
-
+        //update consent info
         consentInfo.requestConsentInfoUpdate(pubIds,object : ConsentInfoUpdateListener{
+
+
+            //if the user is in the EU, show the consent dialog
+            // (regardless of whether the consent info is sucessfully updated or not)
             override fun onFailedToUpdateConsentInfo(reason: String?) {
+                Log.d(TAG,"onFailedToUpdateConsentInfo: $reason")
                 if(consentInfo.isRequestLocationInEeaOrUnknown) showConsentDialog()
             }
 
@@ -121,47 +129,52 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    //Show consent dialog
     fun showConsentDialog(){
 
         val privPolicyUrl = URL("https://hllabs.github.io/linuxnews/privacy_policy")
 
-        val form = ConsentForm.Builder(applicationContext, privPolicyUrl)
-                .withListener(object : ConsentFormListener() {
-                    override fun onConsentFormLoaded() {}
 
+        form = ConsentForm.Builder(this@MainActivity, privPolicyUrl)
+                .withListener(object : ConsentFormListener() {
+                    //show the form only when it has been loaded
+                    override fun onConsentFormLoaded() {
+                       form.show()
+                    }
                     override fun onConsentFormOpened() {}
 
 
                     override fun onConsentFormClosed(
                             consentStatus: ConsentStatus?, userPrefersAdFree: Boolean?) {
                         when (consentStatus) {
+                            //if the consent status is personalised, show personalised ads.
+                            // For all other values, show non-personalised ads
                             ConsentStatus.PERSONALIZED -> {
                                 adRequest = AdRequest.Builder().build()
                                 adView.loadAd(adRequest)
 
                             }
-                            ConsentStatus.NON_PERSONALIZED -> {
+                            else -> {
                                 val extras = Bundle()
                                 extras.putString("npa", "1")
                                 adRequest = AdRequest.Builder().addNetworkExtrasBundle(AdMobAdapter::class.java , extras).build()
                                 adView.loadAd(adRequest)
                             }
-                            else -> showConsentDialog()
+
                         }
                     }
 
-                    override fun onConsentFormError(errorDescription: String?) { showConsentDialog()}
+                    override fun onConsentFormError(errorDescription: String?) {
+                        Log.d(TAG,"onConsentFormError: $errorDescription")
+                    }
                 })
                 .withPersonalizedAdsOption()
                 .withNonPersonalizedAdsOption()
-                .withAdFreeOption()
                 .build()
 
         form.load()
-
-        form.show()
-
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main,menu)
