@@ -88,7 +88,6 @@ class MainActivity : AppCompatActivity() {
         MobileAds.initialize(this,"ca-app-pub-7444749934962149~4885084340")
         val consentInfo = ConsentInformation.getInstance(applicationContext)
         val pubIds = arrayOf("pub-7444749934962149")
-        consentInfo.debugGeography = DebugGeography.DEBUG_GEOGRAPHY_EEA
         //update consent info
         consentInfo.requestConsentInfoUpdate(pubIds,object : ConsentInfoUpdateListener{
 
