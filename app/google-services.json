@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:485684739269:android:edf6632823fdf740",
         "android_client_info": {
-          "package_name": "com.hllabs.linuxnews"
+          "package_name": "com.hllabs.ainews"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "485684739269-lblk64141i1o4q9pas07v4h1r2iuopj4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.hllabs.linuxnews",
+            "package_name": "com.hllabs.ainews",
             "certificate_hash": "96b2451f89a14e6ba0952b98bc196be1d7cf3300"
           }
         },

@@ -1,4 +1,4 @@
-package com.hllabs.linuxnews
+package com.hllabs.ainews
 
 import android.os.AsyncTask
 import android.util.Log

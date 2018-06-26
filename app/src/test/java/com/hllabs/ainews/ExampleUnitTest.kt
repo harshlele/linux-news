@@ -1,4 +1,4 @@
-package com.hllabs.linuxnews
+package com.hllabs.ainews
 
 import org.junit.Test
 

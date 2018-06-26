@@ -1,4 +1,4 @@
-package com.hllabs.linuxnews
+package com.hllabs.ainews
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

@@ -1,4 +1,4 @@
-package com.hllabs.linuxnews
+package com.hllabs.ainews
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity

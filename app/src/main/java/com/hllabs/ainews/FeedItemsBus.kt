@@ -1,4 +1,4 @@
-package com.hllabs.linuxnews
+package com.hllabs.ainews
 
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
