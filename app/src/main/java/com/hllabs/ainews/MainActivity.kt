@@ -20,7 +20,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import java.net.URL
 
 
-
 /*
 * Main Activity
 * */
@@ -62,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         //Listener for Event bus
-        FeedItemsBus.INSTANCE.toObserverable().subscribe({
+        FeedItemsBus.INSTANCE.toObserverable().subscribe {
             //Add it to the combined list
             combinedArticleList.addAll(it)
 
@@ -75,7 +74,7 @@ class MainActivity : AppCompatActivity() {
             waveLoadingView.centerTitle = "$percent %"
             if(feedSourcesCtr <= 0) sortFeed()
 
-        })
+        }
 
         //initialise recyclerview
         newsList.layoutManager = LinearLayoutManager(this)
@@ -85,7 +84,7 @@ class MainActivity : AppCompatActivity() {
         reloadArticles()
 
         //initialise mobile ads
-        MobileAds.initialize(this,"ca-app-pub-7444749934962149~4885084340")
+        MobileAds.initialize(this,"ca-app-pub-7444749934962149/2482287795")
         val consentInfo = ConsentInformation.getInstance(applicationContext)
         val pubIds = arrayOf("pub-7444749934962149")
         //update consent info
@@ -305,15 +304,15 @@ class MainActivity : AppCompatActivity() {
         builder.setPositiveButton("OK" , null)
 
 
-        builder.setNeutralButton("Select All" , {dialogInterface, i ->
+        builder.setNeutralButton("Select All") { dialogInterface, i ->
             val dialogView = dialogInterface as AlertDialog
             for(i in 0 until Sites().siteUrls.size) dialogView.listView.setItemChecked(i,true)
-        })
+        }
 
-        builder.setNegativeButton("Select None" , {dialogInterface, i ->
+        builder.setNegativeButton("Select None") { dialogInterface, i ->
             val dialogView = dialogInterface as AlertDialog
             for(i in 0 until Sites().siteUrls.size) dialogView.listView.setItemChecked(i,false)
-        })
+        }
 
         builder.setMultiChoiceItems(Sites().siteNames, currentCheckedArray , { dialogInterface, i, b -> })
 

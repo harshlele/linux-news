@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "485684739269",
-    "firebase_url": "https://linux-news-bb858.firebaseio.com",
-    "project_id": "linux-news-bb858",
-    "storage_bucket": "linux-news-bb858.appspot.com"
+    "project_number": "694450078947",
+    "firebase_url": "https://ai-news-d2248.firebaseio.com",
+    "project_id": "ai-news-d2248",
+    "storage_bucket": "ai-news-d2248.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:485684739269:android:edf6632823fdf740",
+        "mobilesdk_app_id": "1:694450078947:android:448065f8f270c318",
         "android_client_info": {
           "package_name": "com.hllabs.ainews"
         }
       },
       "oauth_client": [
         {
-          "client_id": "485684739269-lblk64141i1o4q9pas07v4h1r2iuopj4.apps.googleusercontent.com",
+          "client_id": "694450078947-u73j4s73pvvcg8gm926s7v2258sren7p.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.hllabs.ainews",
@@ -23,13 +23,13 @@
           }
         },
         {
-          "client_id": "485684739269-chas1g3gfa3iqvqlrdbcuufke7no8mm3.apps.googleusercontent.com",
+          "client_id": "694450078947-cen9eltsmpr83hrvemvupo6fi57gm12j.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB9W5YKKjcnGuwhoheF9146z4ZHVWCepxw"
+          "current_key": "AIzaSyCrlAuL9tqJMe_NC8Hhnt2L0zIIiDWgANc"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "485684739269-chas1g3gfa3iqvqlrdbcuufke7no8mm3.apps.googleusercontent.com",
+              "client_id": "694450078947-cen9eltsmpr83hrvemvupo6fi57gm12j.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
