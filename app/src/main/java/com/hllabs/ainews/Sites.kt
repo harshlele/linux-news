@@ -15,9 +15,7 @@ class Sites{
             "Nvidia Blog",
             "Google AI Blog",
             "Microsoft Technet - Machine Learning Blog",
-            "Youtube - Siraj Raval",
-            "Youtube - Tensorflow"
-
+            "Facebook Research"
     )
     val siteUrls:ArrayList<String> = arrayListOf(
             "https://www.sciencedaily.com/rss/computers_math/artificial_intelligence.xml",
@@ -29,22 +27,20 @@ class Sites{
             "http://feeds.feedburner.com/nvidiablog",
             "http://feeds.feedburner.com/blogspot/gJZg",
             "https://blogs.technet.microsoft.com/machinelearning/feed/",
-            "https://www.youtube.com/feeds/videos.xml?channel_id=UCWN3xxRkmTPmbKwht9FuE5A",
-            "https://www.youtube.com/feeds/videos.xml?channel_id=UC0rqucBdTuFTjJiefW5t-IQ"
-    )
+            "https://research.fb.com/feed/"
+            )
 
 
     //array of default selections
-    val defaultCheckedArray = booleanArrayOf(false,false,true,false,true,true,true,true,true,true,true)
+    val defaultCheckedArray = booleanArrayOf(false,false,true,false,true,true,true,true,true,true)
 
-    val defaultSiteSelection = arrayListOf<String>("http://news.mit.edu/rss/topic/robotics",
+    val defaultSiteSelection = arrayListOf("http://news.mit.edu/rss/topic/robotics",
             "https://www.technologyreview.com/c/computing/rss/",
             "https://deepmind.com/blog/feed/basic/",
             "http://feeds.feedburner.com/nvidiablog",
             "http://feeds.feedburner.com/blogspot/gJZg",
             "https://blogs.technet.microsoft.com/machinelearning/feed/",
-            "https://www.youtube.com/feeds/videos.xml?channel_id=UCWN3xxRkmTPmbKwht9FuE5A",
-            "https://www.youtube.com/feeds/videos.xml?channel_id=UC0rqucBdTuFTjJiefW5t-IQ"
+            "https://research.fb.com/feed/"
             )
 
     //get a site's name from its feed url

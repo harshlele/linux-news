@@ -35,7 +35,20 @@ class FeedLoaderTask(val url:String, val name:String ): AsyncTask<Unit, Unit, Un
                     if(article.pubDate != null )        a.pubDate = article.pubDate
                     if(article.categories != null)      a.categories = article.categories
 
-                    articleList.add(a)
+                    if(a.feedUrl == "https://research.fb.com/feed/"){
+
+                        val tags = listOf<String>("Computational Photography & Intelligent Cameras","Computer Vision","Facebook AI Research","Machine Learning")
+
+                        for (tag in tags){
+                            if(a.categories.contains(tag)) {
+                                articleList.add(a)
+                                break
+                            }
+                        }
+                    }
+
+
+                    else articleList.add(a)
                     //Get at most 20 items
                     if(articleList.size >= 20) break
                 }
