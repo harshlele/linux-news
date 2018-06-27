@@ -60,6 +60,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        supportActionBar!!.title = "Latest News"
+
         //Listener for Event bus
         FeedItemsBus.INSTANCE.toObserverable().subscribe {
             //Add it to the combined list

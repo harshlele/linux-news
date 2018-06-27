@@ -15,7 +15,9 @@ class Sites{
             "Nvidia Blog",
             "Google AI Blog",
             "Microsoft Technet - Machine Learning Blog",
-            "Facebook Research"
+            "Facebook Research",
+            "Tensorflow Blog"
+
     )
     val siteUrls:ArrayList<String> = arrayListOf(
             "https://www.sciencedaily.com/rss/computers_math/artificial_intelligence.xml",
@@ -27,12 +29,14 @@ class Sites{
             "http://feeds.feedburner.com/nvidiablog",
             "http://feeds.feedburner.com/blogspot/gJZg",
             "https://blogs.technet.microsoft.com/machinelearning/feed/",
-            "https://research.fb.com/feed/"
+            "https://research.fb.com/feed/",
+            "https://medium.com/feed/tensorflow"
+
             )
 
 
     //array of default selections
-    val defaultCheckedArray = booleanArrayOf(false,false,true,false,true,true,true,true,true,true)
+    val defaultCheckedArray = booleanArrayOf(false,false,true,false,true,true,true,true,true,true,false)
 
     val defaultSiteSelection = arrayListOf("http://news.mit.edu/rss/topic/robotics",
             "https://www.technologyreview.com/c/computing/rss/",
