@@ -229,7 +229,7 @@ class MainActivity : AppCompatActivity() {
             else if(item.itemId == R.id.action_ad_settings) showConsentDialog()
 
             else if(item.itemId == R.id.action_privacy_policy){
-                val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://hllabs.github.io/linuxnews/privacy_policy"))
+                val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://hllabs.github.io/ainews/privacy_policy"))
                 startActivity(i)
 
             }
