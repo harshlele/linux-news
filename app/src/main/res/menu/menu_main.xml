@@ -24,6 +24,12 @@
         android:title="Saved Pages"
         app:showAsAction="never"/>
 
+
+    <item
+        android:id="@+id/action_privacy_policy"
+        android:title="Privacy Policy"
+        app:showAsAction="never"/>
+
     <item
         android:id="@+id/action_ad_settings"
         android:title="Ad Settings"
