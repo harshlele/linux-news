@@ -1,6 +1,7 @@
 package com.hllabs.ainews
 
 import android.content.Intent
+import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
@@ -226,6 +227,12 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             else if(item.itemId == R.id.action_ad_settings) showConsentDialog()
+
+            else if(item.itemId == R.id.action_privacy_policy){
+                val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://hllabs.github.io/linuxnews/privacy_policy"))
+                startActivity(i)
+
+            }
 
         }
 
